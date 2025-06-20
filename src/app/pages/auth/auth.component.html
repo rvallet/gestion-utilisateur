@@ -1,0 +1,40 @@
+<div class="auth-page" fxLayout="column" fxLayoutAlign="center center" style="height: 100vh;">
+  <h2 class="auth-title">
+    {{ isCreating ? 'Création de compte' : 'Authentification' }}
+  </h2>
+
+<form (ngSubmit)="onLogin()" *ngIf="!isCreating" class="auth-form">
+  <label>Login:</label>
+  <input [(ngModel)]="login" name="login" required />
+
+  <label>Mot de passe:</label>
+  <input type="password" [(ngModel)]="password" name="password" required />
+
+  <div class="buttons">
+    <button mat-raised-button color="primary" type="submit">Se Connecter</button>
+    <button mat-raised-button (click)="isCreating=true" type="button">Créer un compte</button>
+  </div>
+</form>
+
+<form (ngSubmit)="onRegister()" *ngIf="isCreating" class="auth-form">
+  <label>Nom:</label>
+  <input [(ngModel)]="nom" name="nom" required />
+
+  <label>Prénom:</label>
+  <input [(ngModel)]="prenom" name="prenom" required />
+
+  <label>Login:</label>
+  <input [(ngModel)]="login" name="login" required />
+
+  <label>Mot de passe:</label>
+  <input type="password" [(ngModel)]="password" name="password" required />
+
+  <div class="buttons">
+    <button mat-raised-button color="accent" type="submit">Créer</button>
+    <button mat-raised-button (click)="isCreating=false" type="button">Annuler</button>
+  </div>
+</form>
+
+<p *ngIf="message">{{ message }}</p>
+
+</div>

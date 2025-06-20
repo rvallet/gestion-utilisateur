@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+/* Common style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Style général pour aligner verticalement et horizontalement */
+.header-container,
+.login-container {
+  height: 100vh; /* toute la hauteur de la fenêtre */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* aligner verticalement */
+  align-items: center;     /* aligner horizontalement */
+  text-align: center;
+}
+
+h1, h2 {
+  margin-bottom: 20px;
+}
