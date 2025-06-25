@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {User} from "../models/user.model";
 import { environment } from '../../environments/environment';
+import {ChangePasswordRequest} from "../models/change-password-request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +23,6 @@ export class UserService {
     return this.http.post<User>(`${this.apiUrl}/create`, user);
   }
 
-  getUserById(id: string): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/id/${id}`);
-  }
-
   updateUser(user: User): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/update`, user);
   }
@@ -34,8 +31,8 @@ export class UserService {
     return this.http.delete<void>(`${this.apiUrl}/id/${id}`);
   }
 
-  changePassword(user: User): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/change-password`, user);
+  changePassword(request: ChangePasswordRequest): Observable<any> {
+    return this.http.put<void>(`${this.apiUrl}/change-password`, request);
   }
 
 }

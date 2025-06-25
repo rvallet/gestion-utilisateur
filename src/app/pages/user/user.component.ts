@@ -13,6 +13,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatIconModule} from "@angular/material/icon";
 import {MatCardModule} from "@angular/material/card";
 import {MatDialogTitle} from "@angular/material/dialog";
+import {ChangePasswordRequest} from "../../models/change-password-request.model";
+import {MessageComponent} from "../../shared/message/message.component";
 
 @Component({
   selector: 'app-user',
@@ -28,7 +30,8 @@ import {MatDialogTitle} from "@angular/material/dialog";
     MatCheckboxModule,
     MatIconModule,
     MatCardModule,
-    MatDialogTitle
+    MatDialogTitle,
+    MessageComponent
   ],
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
@@ -56,6 +59,8 @@ export class UserComponent implements OnInit {
   newPassword: string = '';
   confirmPassword: string = '';
   message: string = '';
+  passwordError: string = '';
+  passwordSuccess: string = '';
 
   constructor(private userService: UserService) {
   }
@@ -73,15 +78,15 @@ export class UserComponent implements OnInit {
   }
 
   updateUser(): any {
-    this.userService.updateUser(this.user).subscribe(
-      () => {
+    this.userService.updateUser(this.user).subscribe({
+      next: () => {
         this.message = 'Données mises à jour.';
         localStorage.setItem('user', JSON.stringify(this.user));
       },
-      () => {
+      error: () => {
         this.message = 'Erreur lors de la mise à jour.';
       }
-    );
+    });
   }
 
   deleteUser() {
@@ -134,20 +139,43 @@ export class UserComponent implements OnInit {
     }
   }
 
-  changePassword() {
-    if (this.user && this.user.login && this.user.motDePasse) {
-      this.userService.changePassword(this.user).subscribe(
-        () => {
-          this.message = 'Mot de passe mis à jour.';
-          localStorage.setItem('user', JSON.stringify(this.user));
-        },
-        () => {
-          this.message = 'Erreur lors de la mise à jour du mot de passe.';
-        }
-      );
-    } else {
-      this.message = 'Veuillez renseigner le mot de passe actuel.';
+  changePassword(): void {
+    // Réinitialisation des messages
+    this.passwordError = '';
+    this.passwordSuccess = '';
+    // Vérification des champs
+    if (!this.user || !this.user.login) {
+      this.passwordError = 'Veuillez vous reconnecter.';
+      return;
     }
+    if (!this.newPassword || !this.confirmPassword) {
+      this.passwordError = 'Veuillez remplir tous les champs.';
+      return;
+    }
+    if (this.newPassword !== this.confirmPassword) {
+      this.passwordError = 'Les mots de passe ne correspondent pas.';
+      return;
+    }
+
+    // Préparation de la requête
+    const request: ChangePasswordRequest = {
+      login: this.user.login,
+      newPassword: this.newPassword
+    };
+
+    // Si regex de mot de passe est définie, l'ajouter à la requête
+    this.userService.changePassword(request).subscribe({
+      next: () => {
+        this.passwordSuccess = 'Mot de passe modifié avec succès.';
+        this.newPassword = '';
+        this.confirmPassword = '';
+      },
+      error: (error) => {
+        //console.error('Erreur changement mot de passe', error);
+        this.passwordError = error?.error || error.error?.message || 'Erreur lors du changement de mot de passe.';
+      }
+    });
+
   }
 
 }

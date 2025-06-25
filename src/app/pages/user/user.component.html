@@ -26,15 +26,20 @@
   <h2 class="section-title">Changer le mot de passe</h2>
   <mat-card class="password-card" [@fadeIn]>
     <mat-card-content>
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Nouveau mot de passe</mat-label>
-        <input matInput type="password" [(ngModel)]="newPassword" />
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Confirmer</mat-label>
-        <input matInput type="password" [(ngModel)]="confirmPassword" />
-      </mat-form-field>
-      <button mat-raised-button color="accent" (click)="changePassword()">Changer le mot de passe</button>
+      <form #passwordForm="ngForm" (ngSubmit)="changePassword()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nouveau mot de passe</mat-label>
+          <input matInput type="password" [(ngModel)]="newPassword" name="newPassword" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Confirmer</mat-label>
+          <input matInput type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required />
+        </mat-form-field>
+        <button mat-raised-button color="accent" type="submit">Changer le mot de passe</button>
+      </form>
+      <!-- Message d'erreur personnalisé -->
+      <app-message *ngIf="passwordError" [message]="passwordError" [isError]="true"></app-message>
+      <app-message *ngIf="passwordSuccess" [message]="passwordSuccess" [isError]="false"></app-message>
     </mat-card-content>
   </mat-card>
 
