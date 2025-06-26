@@ -61,6 +61,15 @@ export class UserComponent implements OnInit {
   message: string = '';
   passwordError: string = '';
   passwordSuccess: string = '';
+  section: string = 'personnel';
+
+  // Critères de mot de passe
+  passwordCriteria = {
+    length: false,
+    lowercase: false,
+    uppercase: false,
+    special: false,
+  };
 
   constructor(private userService: UserService) {
   }
@@ -78,6 +87,7 @@ export class UserComponent implements OnInit {
   }
 
   updateUser(): any {
+    this.message = ''; // reset message
     this.userService.updateUser(this.user).subscribe({
       next: () => {
         this.message = 'Données mises à jour.';
@@ -90,6 +100,7 @@ export class UserComponent implements OnInit {
   }
 
   deleteUser() {
+    this.message = ''; // reset message
     if (this.user && this.user.login) {
       this.userService.deleteUser(this.user.login).subscribe(
         () => {
@@ -126,6 +137,7 @@ export class UserComponent implements OnInit {
   }
 
   removeAddress(index: number) {
+    this.message = ''; // reset message
     if (this.user?.adresses) {
       this.user.adresses.splice(index, 1);
       this.updateUser();
@@ -143,6 +155,7 @@ export class UserComponent implements OnInit {
     // Réinitialisation des messages
     this.passwordError = '';
     this.passwordSuccess = '';
+    this.message = '';
     // Vérification des champs
     if (!this.user || !this.user.login) {
       this.passwordError = 'Veuillez vous reconnecter.';
@@ -176,6 +189,24 @@ export class UserComponent implements OnInit {
       }
     });
 
+  }
+
+  validatePassword() {
+    const pw: string = this.newPassword;
+
+    this.passwordCriteria.length = pw.length >= 8;
+    this.passwordCriteria.lowercase = /[a-z]/.test(pw);
+    this.passwordCriteria.uppercase = /[A-Z]/.test(pw);
+    this.passwordCriteria.special = /[@$!%*?&]/.test(pw);
+  }
+
+  isPasswordValid() {
+    return Object.values(this.passwordCriteria).every(v => v);
+  }
+
+  selectSection(sec: string) {
+    this.message = '';
+    this.section = sec;
   }
 
 }
