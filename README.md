@@ -1,15 +1,14 @@
-## Table des matières
-- [Introduction : GestionUtilisateur](#introduction--gestionutilisateur)
-- [Serveur de développement](#serveur-de-développement)
-- [Build](#build)
-- [Déploiement](#déploiement)
-- [Licences](#licences)
-- 
 # Introduction : GestionUtilisateur
 
 Ce projet Angular est une application de gestion des utilisateurs, permettant de créer, lire, mettre à jour et supprimer des utilisateurs.  
 Il utilise Angular Material pour l'interface utilisateur et un service RESTful pour la gestion des données.  
 Cette application permet de tester l'API ms-user et de mettre en pratique l'utilisation de ce microservice.
+
+## Table des matières
+- [Serveur de développement](#serveur-de-développement)
+- [Build](#build)
+- [Déploiement](#déploiement)
+- [Licences](#licences)
 
 ## Serveur de développement
 Pour exécuter l'application en mode développement, assurez-vous d'avoir installé les dépendances nécessaires. Vous pouvez le faire en exécutant la commande suivante dans le répertoire du projet :
