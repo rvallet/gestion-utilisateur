@@ -1,27 +1,77 @@
-# GestionUtilisateur
+## Table des matières
+- [Introduction : GestionUtilisateur](#introduction--gestionutilisateur)
+- [Serveur de développement](#serveur-de-développement)
+- [Build](#build)
+- [Déploiement](#déploiement)
+- [Licences](#licences)
+- 
+# Introduction : GestionUtilisateur
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.7.
+Ce projet Angular est une application de gestion des utilisateurs, permettant de créer, lire, mettre à jour et supprimer des utilisateurs.  
+Il utilise Angular Material pour l'interface utilisateur et un service RESTful pour la gestion des données.  
+Cette application permet de tester l'API ms-user et de mettre en pratique l'utilisation de ce microservice.
 
-## Development server
+## Serveur de développement
+Pour exécuter l'application en mode développement, assurez-vous d'avoir installé les dépendances nécessaires. Vous pouvez le faire en exécutant la commande suivante dans le répertoire du projet :
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```bash
+npm clean-install
+```
+Ensuite, vous pouvez démarrer le serveur de développement avec la commande suivante :
 
-## Code scaffolding
+```bash
+ng serve
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Et ouvrez votre navigateur à l'adresse `http://localhost:4200/`.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Pour construire le projet, exécutez la commande suivante en précisant l'environnement (production ou développement) :
 
-## Running unit tests
+```bash
+ng build --configuration production
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Cette commande va compiler l'application et placer les fichiers générés dans le répertoire `dist/`. Vous pouvez ensuite déployer ces fichiers sur un serveur web.
 
-## Running end-to-end tests
+## Déploiement
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Pour déployer l'application, vous pouvez utiliser un serveur web comme Nginx ou Apache.
+Assurez-vous que les fichiers générés par la commande de build sont copiés dans le répertoire racine de votre serveur web.
 
-## Further help
+pour Nginx, vous pouvez utiliser la configuration suivante :
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```nginx
+server {
+    listen 80;
+    server_name your_domain.com;
+
+    location / {
+        root /path/to/your/dist/directory;
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
+Pour charger la configuration, placez ce fichier dans le répertoire de configuration de Nginx (généralement `/etc/nginx/sites-available/`) et créez un lien symbolique vers le répertoire `sites-enabled` :
+
+```bash
+sudo ln -s /etc/nginx/sites-available/your_config_file /etc/nginx/sites-enabled/ # Crée un lien symbolique
+sudo nginx -t # Pour tester la configuration
+sudo systemctl reload nginx # Recharge la configuration de Nginx
+```
+
+Une fois que la configuration est en place, vous pouvez redémarrer Nginx pour appliquer les changements :
+
+```bash
+sudo systemctl reload nginx # Recharge la configuration de Nginx
+sudo systemctl restart nginx # Redémarre Nginx
+```
+
+Lorsque vous accédez à `http://your_domain.com`, l'application Angular devrait être servie correctement. 
+Par la suite, vous n'aurez plus qu'à mettre à jour les fichiers dans le répertoire `dist/` pour déployer de nouvelles versions de l'application.
+Nginx servira automatiquement les fichiers statiques de l'application Angular sans nécessiter de redémarrage du serveur.
+
+## Licences
+Ce projet est sous licence MIT. Vous pouvez consulter le fichier `LICENSE` pour plus de détails.
+
