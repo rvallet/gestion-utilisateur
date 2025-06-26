@@ -24,6 +24,7 @@ export class AuthComponent {
   constructor(private userService: UserService, private router: Router) {}
 
   onLogin() {
+    this.message = '';
     this.userService.login(this.login, this.password).subscribe(
       user => {
         localStorage.setItem('user', JSON.stringify(user));
@@ -36,6 +37,7 @@ export class AuthComponent {
   }
 
   onRegister() {
+    this.message = '';
     const newUser = {
       login: this.login,
       motDePasse: this.password,
@@ -53,4 +55,9 @@ export class AuthComponent {
       }
     );
   }
+
+  resetMessage() {
+    this.message = '';
+  }
+
 }
