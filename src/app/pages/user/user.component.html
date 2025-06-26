@@ -1,16 +1,8 @@
-<div class="container">
-  <!-- Menu de navigation gauche -->
-  <nav class="side-nav">
-    <button mat-button (click)="selectSection('personnel')" [color]="section==='personnel' ? 'primary' : ''">Infos personnelles</button>
-    <button mat-button (click)="selectSection('pwd')" [color]="section==='pwd' ? 'primary' : ''">Changer mot de passe</button>
-    <button mat-button (click)="selectSection('adresses')" [color]="section==='adresses' ? 'primary' : ''">Adresses</button>
-  </nav>
-
-  <!-- Affichage dynamique selon la sélection -->
-  <div class="content-area">
-    <!-- Infos personnelles -->
-    <div *ngIf="section==='personnel'" @slideFadeAnimation>
-      <h2 class="section-title">Informations Personnelles</h2>
+<!-- Onglets de navigation -->
+<mat-tab-group [(selectedIndex)]="section">
+  <!-- Onglet Infos personnelles -->
+  <mat-tab label="Infos personnelles">
+    <div class="section-content" @slideFadeAnimation>
       <mat-card class="info-card">
         <mat-card-content>
           <div class="info-fields">
@@ -27,25 +19,26 @@
             <button mat-raised-button color="primary" (click)="updateUser()">Mettre à jour</button>
             <button mat-raised-button color="warn" (click)="deleteUser()">Supprimer mon compte</button>
             <button mat-raised-button (click)="logout()">Déconnexion</button>
-            <!-- Message -->
             <p *ngIf="message">{{ message }}</p>
           </div>
         </mat-card-content>
       </mat-card>
     </div>
-    <!-- Bloc changement mot de passe -->
-    <div *ngIf="section==='pwd'" @slideFadeAnimation>
-      <h2 class="section-title">Changer le mot de passe</h2>
+  </mat-tab>
+
+  <!-- Onglet changement mot de passe -->
+  <mat-tab label="Changer mot de passe">
+    <div class="section-content" @slideFadeAnimation>
       <mat-card class="password-card" [@fadeIn]>
         <mat-card-content>
           <form #passwordForm="ngForm" (ngSubmit)="changePassword()">
-            <!-- Saisie nouveau mot de passe -->
+            <!-- Nouveau mot de passe -->
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Nouveau mot de passe</mat-label>
               <input matInput type="password" [(ngModel)]="newPassword" name="newPassword" (ngModelChange)="validatePassword()" required />
             </mat-form-field>
 
-            <!-- Confirmation mot de passe -->
+            <!-- Confirmation -->
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Confirmer</mat-label>
               <input matInput type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required />
@@ -54,10 +47,10 @@
             <!-- Bouton -->
             <button mat-raised-button color="accent" type="submit" [disabled]="!isPasswordValid()">Changer le mot de passe</button>
           </form>
-          <!-- Message d'erreur personnalisé -->
+          <!-- Messages -->
           <app-message *ngIf="passwordError" [message]="passwordError" [isError]="true"></app-message>
           <app-message *ngIf="passwordSuccess" [message]="passwordSuccess" [isError]="false"></app-message>
-          <!-- Liste des critères -->
+          <!-- Critères -->
           <div class="criteria-list">
             <div class="criterion" [class.valid]="passwordCriteria.length">
               <mat-icon>{{ passwordCriteria.length ? 'check_circle' : 'cancel' }}</mat-icon>
@@ -76,22 +69,22 @@
               <span>Un caractère spécial</span>
             </div>
           </div>
-          <!-- Message -->
           <p *ngIf="message">{{ message }}</p>
         </mat-card-content>
       </mat-card>
     </div>
+  </mat-tab>
 
-    <div *ngIf="section==='adresses'" @slideFadeAnimation>
-      <!-- Bloc Adresses -->
-      <h2 class="section-title">Adresses</h2>
-      <mat-card class="addresses-card" @slideFadeAnimation>
+  <!-- Onglet adresses -->
+  <mat-tab label="Adresses">
+    <div class="section-content" @slideFadeAnimation>
+      <h2 class="section-title">Gestion des adresses</h2>
+      <mat-card class="addresses-card">
         <mat-card-header>
           <mat-card-title>Gestion des adresses</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <div *ngFor="let address of user.adresses; let i = index" class="address-item" [class.principale]="address.principale" @fadeIn>
-
             <div class="address-header">
               <mat-checkbox [(ngModel)]="address.principale" (change)="setDefaultAddress(i)">
                 Adresse principale
@@ -100,7 +93,6 @@
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
-
             <div class="address-details">
               <mat-form-field appearance="outline"><mat-label>Numéro</mat-label>
                 <input matInput [(ngModel)]="address.numero" (ngModelChange)="updateUser()" />
@@ -122,10 +114,9 @@
           <button mat-flat-button color="primary" (click)="addAddress()">
             <mat-icon>add</mat-icon> Ajouter une adresse
           </button>
-          <!-- Message -->
           <p *ngIf="message">{{ message }}</p>
         </mat-card-content>
       </mat-card>
     </div>
-  </div>
-</div>
+  </mat-tab>
+</mat-tab-group>

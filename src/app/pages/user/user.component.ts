@@ -15,6 +15,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatDialogTitle} from "@angular/material/dialog";
 import {ChangePasswordRequest} from "../../models/change-password-request.model";
 import {MessageComponent} from "../../shared/message/message.component";
+import {MatTab, MatTabGroup} from "@angular/material/tabs";
 
 @Component({
   selector: 'app-user',
@@ -30,8 +31,9 @@ import {MessageComponent} from "../../shared/message/message.component";
     MatCheckboxModule,
     MatIconModule,
     MatCardModule,
-    MatDialogTitle,
-    MessageComponent
+    MessageComponent,
+    MatTab,
+    MatTabGroup
   ],
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
@@ -61,7 +63,7 @@ export class UserComponent implements OnInit {
   message: string = '';
   passwordError: string = '';
   passwordSuccess: string = '';
-  section: string = 'personnel';
+  section: string = '0';
 
   // Critères de mot de passe
   passwordCriteria = {
@@ -202,11 +204,6 @@ export class UserComponent implements OnInit {
 
   isPasswordValid() {
     return Object.values(this.passwordCriteria).every(v => v);
-  }
-
-  selectSection(sec: string) {
-    this.message = '';
-    this.section = sec;
   }
 
 }
